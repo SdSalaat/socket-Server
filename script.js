@@ -31,73 +31,72 @@ loginUser = () => {
     if (username.value === '') {
         alert('Enter username')
     } else {
-        socket.emit('validate-user', {'name': username.value});
         let xHttp = new XMLHttpRequest();
         xHttp.onreadystatechange = () => {
             if (xHttp.readyState === 4 && xHttp.status === 200) {
-                const users = JSON.parse(xHttp.responseText);
-                let list = document.getElementById("userList");
-                for (let i = 0; i < users.length; i++) {
-                    activeUser = JSON.parse(localStorage.getItem('activeUser'));
-                    if (activeUser._id !== users[i]._id) {
-                        let listItem = document.createElement('li');
-                        let button = document.createElement('button');
-                        button.style.marginLeft = '10px';
-                        button.innerText = "Send Message";
-                        button.addEventListener('click', function () {
-                            selectUser(users[i]);
-                        });
-                        if(users[i].isActive){
-                            let span = document.createElement('span');
-                            span.innerHTML = '&#8226;';
-                            listItem.appendChild(document.createTextNode(users[i].name));
-                            span.style.marginLeft = '10px';
-                            span.style.color = 'green';
-                            listItem.appendChild(span);
-                        }
-                        else{
-                            listItem.appendChild(document.createTextNode(users[i].name));
-                        }
-                        listItem.appendChild(button);
-                        list.appendChild(listItem);
-                    }
-                }
+                socket.emit('validate-user', {'name': username.value});
+                const users = JSON.parse(xHttp.responseText).data;
+                localStorage.setItem('activeUser', JSON.stringify(users));
             }
         };
-        xHttp.open("GET", "http://localhost:3000/", true);
-        xHttp.setRequestHeader('Content-Type', 'Application/json');
-        xHttp.send();
+        xHttp.open("POST", "http://localhost:3000/api/user/login", true);
+        xHttp.setRequestHeader('Content-Type', 'application/json');
+        xHttp.send(JSON.stringify({username: username.value}));
     }
 };
+//
+// socket.on('rec-message', (data) => {
+//     activeUser = JSON.parse(localStorage.getItem('activeUser'));
+//
+//     if (data.length > 0) {
+//
+//         if (parseInt(data[0].senderID, 10) === userSelected._id || parseInt(data[0].receiverID, 10) === userSelected._id) {
+//             messages.innerHTML = '';
+//             data.map(chat => {
+//                 // if (parseInt(chat.senderID, 10) === activeUser._id && parseInt(chat.receiverID, 10) === userSelected._id) {
+//                 let div = document.createElement('div');
+//                 if (parseInt(chat.senderID, 10) === activeUser._id) {
+//                     div.innerHTML = `<b>${activeUser.name} : </b> ${chat.message}`;
+//                 } else if (parseInt(chat.receiverID, 10) === activeUser._id) {
+//                     div.innerHTML = `<b>${userSelected.name} : </b> ${chat.message}`;
+//                 }
+//                 messages.appendChild(div);
+//                 // }
+//             })
+//         }
+//     }
+// });
 
-socket.on('rec-message', (data) => {
-    activeUser = JSON.parse(localStorage.getItem('activeUser'));
-
-    if (data.length > 0) {
-
-        if (parseInt(data[0].senderID, 10) === userSelected._id || parseInt(data[0].receiverID, 10) === userSelected._id) {
-            messages.innerHTML = '';
-            data.map(chat => {
-                // if (parseInt(chat.senderID, 10) === activeUser._id && parseInt(chat.receiverID, 10) === userSelected._id) {
-                let div = document.createElement('div');
-                if (parseInt(chat.senderID, 10) === activeUser._id) {
-                    div.innerHTML = `<b>${activeUser.name} : </b> ${chat.message}`;
-                } else if (parseInt(chat.receiverID, 10) === activeUser._id) {
-                    div.innerHTML = `<b>${userSelected.name} : </b> ${chat.message}`;
-                }
-                messages.appendChild(div);
-                // }
-            })
+socket.on('validated-user', (users) => {
+    let list = document.getElementById("userList");
+    for (let i = 0; i < users.length; i++) {
+        activeUser = JSON.parse(localStorage.getItem('activeUser'));
+        // if (activeUser._id !== users[i]._id) {
+        if (activeUser.username !== users[i].username) {
+            let listItem = document.createElement('li');
+            let button = document.createElement('button');
+            button.style.marginLeft = '10px';
+            button.innerText = "Send Message";
+            button.addEventListener('click', function () {
+                selectUser(users[i]);
+            });
+            if (users[i].isActive) {
+                let span = document.createElement('span');
+                span.innerHTML = '&#8226;';
+                listItem.appendChild(document.createTextNode(users[i].name));
+                span.style.marginLeft = '10px';
+                span.style.color = 'green';
+                listItem.appendChild(span);
+            } else {
+                listItem.appendChild(document.createTextNode(users[i].name));
+            }
+            listItem.appendChild(button);
+            list.appendChild(listItem);
         }
     }
-});
+    messageCenter.style.display = '';
+    loginForm.style.display = 'none';
 
-socket.on('validated-user', (data) => {
-    if (data.socketID) {
-        localStorage.setItem('activeUser', JSON.stringify(data));
-        messageCenter.style.display = '';
-        loginForm.style.display = 'none';
-    }
 });
 
 socket.on('all-users', data => {
@@ -105,8 +104,9 @@ socket.on('all-users', data => {
     list.innerHTML = '';
     for (let i = 0; i < data.length; i++) {
         activeUser = JSON.parse(localStorage.getItem('activeUser'));
-        if(activeUser !== undefined || activeUser !== null){
-            if (activeUser._id !== data[i]._id) {
+        if (activeUser !== undefined || activeUser !== null) {
+            // if (activeUser._id !== data[i]._id) {
+            if (activeUser.username !== data[i].username) {
                 let listItem = document.createElement('li');
                 let button = document.createElement('button');
                 button.style.marginLeft = '10px';
@@ -114,15 +114,14 @@ socket.on('all-users', data => {
                 button.addEventListener('click', function () {
                     selectUser(data[i]);
                 });
-                if(data[i].isActive){
+                if (data[i].isActive) {
                     let span = document.createElement('span');
                     span.innerHTML = '&#8226;';
                     listItem.appendChild(document.createTextNode(data[i].name));
                     span.style.marginLeft = '10px';
                     span.style.color = 'green';
                     listItem.appendChild(span);
-                }
-                else{
+                } else {
                     listItem.appendChild(document.createTextNode(data[i].name));
                 }
                 listItem.appendChild(button);
@@ -182,10 +181,10 @@ selectUser = (user) => {
 
     // HTTP Call
 };
-
-goBack = () => {
-    userSelected = {};
-    document.getElementById("userList").style.display = '';
-    selectedUser.style.display = 'none';
-    messages.style.display = 'none';
-};
+//
+// goBack = () => {
+//     userSelected = {};
+//     document.getElementById("userList").style.display = '';
+//     selectedUser.style.display = 'none';
+//     messages.style.display = 'none';
+// };
