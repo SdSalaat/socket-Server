@@ -3,6 +3,7 @@
 /** @namespace io.emit */
 /** @namespace app.get */
 /** @namespace app.services */
+/** @namespace app.controllers */
 /** @namespace app.socketIDs */
 /** @namespace app.activePool */
 
@@ -40,15 +41,28 @@ io.on('connection', (socket) => {
             });
     });
 
+    //Sent Message Received
+    socket.on('sending-message', (payload) => {
+        app.services.insertChatMessage(payload)
+            .then(chat => {
+                app.services.getAllChats(chat.chats._doc)
+                    .then(chats => {
+                        io.emit('rec-message', chats);
+                    });
+
+            });
+    });
+
 // Socket Disconnect
     socket.on('disconnect', () => {
-        let index = app.activePool.map(o => { return o.socketID}).indexOf(socket.id);
-        if(index !== -1){
-            getSingleUser(activePool[index])
-                .then(data => {
-                    console.log(data);
+        let index = app.activePool.map(o => {
+            return o.socketID
+        }).indexOf(socket.id);
+        if (index !== -1) {
+            app.services.loginUser(app.activePool[index])
+                .then(() => {
                     app.activePool.splice(index, 1);
-                    getAllUsers()
+                    app.services.getAllUsers()
                         .then(data => {
                             socket.broadcast.emit('all-users', data);
                         });

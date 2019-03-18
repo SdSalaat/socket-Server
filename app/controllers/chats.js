@@ -1,7 +1,9 @@
 'use strict';
 module.exports = (app) => {
-    app.controllers.getAllUsers = (req, res) => {
-        app.services.getAllUsers()
+
+    app.controllers.getChats = (req, res) => {
+        let payload = req.body;
+        app.services.getChats(payload)
             .then(response => res.json(response))
             .catch(error => res
                 .status(error.status || 500)
@@ -9,11 +11,9 @@ module.exports = (app) => {
             );
     };
 
-    app.controllers.loginUser = (req, res) => {
-        let payload = {
-            username: req.body.username
-        };
-        app.services.loginUser(payload)
+    app.controllers.insertChatMessage = (req, res) => {
+      let payload = req.body;
+        app.services.getChats(payload)
             .then(response => res.json(response))
             .catch(error => res
                 .status(error.status || 500)

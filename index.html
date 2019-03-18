@@ -21,22 +21,25 @@
  <!--Message Center-->
 <div class="messageCenter">
 
-    <!--Message Area-->
-    <div class="messages"></div>
-    <!--Message Area-->
-
     <!--Users List-->
     <ol id="userList"></ol>
     <!--Users List-->
 
     <!--Selected User-->
     <div id="selectedUser"></div>
+    <br>
     <!--Selected User-->
+
+    <!--Message Area-->
+    <div class="messages"></div>
+    <!--Message Area-->
 
     <div class="messageArea"></div>
     <br>
-    <input type="text" id="message" name="message" placeholder="message">
-    <button onclick="sendMessage()">Send Message</button>
+    <div id="messageField">
+        <input type="text" id="message" name="message" placeholder="message">
+        <button onclick="sendMessage()">Send Message</button>
+    </div>
 </div>
  <!--Message Center-->
 </body>
