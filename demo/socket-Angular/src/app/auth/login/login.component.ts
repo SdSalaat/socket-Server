@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import jQuery from 'jQuery';
 import {Router} from "@angular/router";
+import {DataService} from "../../services/data/data.service";
+import {AuthRouterService} from "../auth-router.service";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -8,8 +11,14 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
+  userDetails: any = {
+    email: '',
+    password: ''
+  };
+
   constructor(
-    public router: Router
+    public router: Router,
+    private authRoute: AuthRouterService
   ) { }
 
   ngOnInit() {
@@ -33,7 +42,7 @@ export class LoginComponent implements OnInit {
         }
 
         if(check){
-          this.testFN();
+          this.userLogin();
           check = false;
           return check
         } else {
@@ -54,7 +63,7 @@ export class LoginComponent implements OnInit {
             return false;
           }
         }
-        else {
+         else {
           if($(input).val().trim() == ''){
             return false;
           }
@@ -78,8 +87,17 @@ export class LoginComponent implements OnInit {
     })(jQuery);
   }
 
-  testFN(){
+  userLogin(){
+    this.authRoute.userLogin(this.userDetails)
+      .subscribe(data => {
+        console.log(data);
+      })
+  }
+
+  route(){
+    // noinspection JSIgnoredPromiseFromCall
     this.router.navigate(['/auth/register'])
+
   }
 
 }

@@ -20,8 +20,11 @@ module.exports = (app) => {
         if (!payload.isActive) {
             payload.isActive = false;
         }
+
+        let data = {email: payload.email, password: payload.password};
+        let change = {isActive: !payload.isActive};
         return new Promise((resolve, reject) => {
-            Users.findOneAndUpdate({username: payload.username}, {isActive: !payload.isActive}, {new: true})
+            Users.findOneAndUpdate(data, change, {new: true})
                 .then(data => {
                         if(data._doc.isActive){
                             app.activePool.push({

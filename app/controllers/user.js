@@ -11,7 +11,8 @@ module.exports = (app) => {
 
     app.controllers.loginUser = (req, res) => {
         let payload = {
-            username: req.body.username
+            email: req.body.email,
+            password: req.body.password
         };
         app.services.loginUser(payload)
             .then(response => res.json(response))
