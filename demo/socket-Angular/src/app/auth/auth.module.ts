@@ -4,7 +4,6 @@ import {AuthRoutingModule} from "./auth-routing.module";
 import {RegisterComponent} from "./register/register.component";
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../services/shared.module";
-import {AuthRouterService} from "./auth-router.service";
 
 @NgModule({
   declarations: [
@@ -14,7 +13,6 @@ import {AuthRouterService} from "./auth-router.service";
     CommonModule,
     FormsModule,
     SharedModule,
-    AuthRouterService,
     AuthRoutingModule
   ]
 })

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import jQuery from 'jQuery';
 import {Router} from "@angular/router";
-import {DataService} from "../../services/data/data.service";
 import {AuthRouterService} from "../auth-router.service";
+import { Socket } from 'ngx-socket-io';
+import {SharedService} from "../../services/shared/shared.service";
 
 @Component({
   selector: 'app-login',
@@ -18,11 +19,12 @@ export class LoginComponent implements OnInit {
 
   constructor(
     public router: Router,
-    private authRoute: AuthRouterService
+    private socket: Socket,
+    private authRoute: AuthRouterService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit() {
-
     ( ($) => {
       "use strict";
 
@@ -81,16 +83,22 @@ export class LoginComponent implements OnInit {
 
         $(thisAlert).removeClass('alert-validate');
       }
-
-
-
     })(jQuery);
+
+    this.socket.on('validated-user', data => {
+      if(data.length > 0) {
+        this.sharedService.setUsers(data);
+        // noinspection JSIgnoredPromiseFromCall
+        this.router.navigate(['/chats/users'])
+      }
+    })
   }
 
   userLogin(){
     this.authRoute.userLogin(this.userDetails)
       .subscribe(data => {
-        console.log(data);
+        localStorage.setItem('activeUser', JSON.stringify(data.data));
+        this.socket.emit('validate-user');
       })
   }
 
