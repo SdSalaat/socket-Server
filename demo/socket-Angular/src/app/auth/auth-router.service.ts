@@ -16,4 +16,8 @@ export class AuthRouterService {
     return this.httpService.post<any>(`/api/user/login`, data, params);
   }
 
+  public registerUser(data, params: HttpParams = new HttpParams()): Observable<any> {
+    return this.httpService.post<any>(`/api/user/register`, data, params);
+  }
+
 }

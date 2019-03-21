@@ -85,9 +85,13 @@ export class LoginComponent implements OnInit {
       }
     })(jQuery);
 
-    this.socket.on('validated-user', data => {
-      if(data.length > 0) {
-        this.sharedService.setUsers(data);
+    this.socket.on('validated-user', users => {
+      if(users.length > 0) {
+        const activeUser = JSON.parse(localStorage.getItem('activeUser'));
+        const filteredUsers = users.filter(function(user) {
+          return user._id !== activeUser._id
+        });
+        this.sharedService.setUsers(filteredUsers);
         // noinspection JSIgnoredPromiseFromCall
         this.router.navigate(['/chats/users'])
       }

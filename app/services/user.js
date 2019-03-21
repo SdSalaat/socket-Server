@@ -47,4 +47,44 @@ module.exports = (app) => {
         })
             ;
     };
+
+    app.services.registerUser = (payload) => {
+        return new Promise((resolve, reject) => {
+            Users.create(payload)
+                .then(data => {
+                        resolve({
+                            data,
+                            message: 'User Created successfully!'
+                        });
+                    }
+                )
+
+                .catch(error => reject({
+                    message: 'Error while Creating user...',
+                    error: error.errors
+                }));
+        })
+            ;
+    };
+
+    app.services.disconnectUser = (payload) => {
+        let data = {username: payload.username};
+        let change = {isActive: !payload.isActive};
+        return new Promise((resolve, reject) => {
+            Users.findOneAndUpdate(data, change)
+                .then(data => {
+                        resolve({
+                            data,
+                            message: 'User Logged Out successfully!'
+                        });
+                    }
+                )
+
+                .catch(error => reject({
+                    message: 'Error while Logging Out user...',
+                    error: error.errors
+                }));
+        })
+            ;
+    };
 };

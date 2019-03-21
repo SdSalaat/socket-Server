@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
             return o.socketID
         }).indexOf(socket.id);
         if (index !== -1) {
-            app.services.loginUser(app.activePool[index])
+            app.services.disconnectUser(app.activePool[index])
                 .then(() => {
                     app.activePool.splice(index, 1);
                     app.services.getAllUsers()

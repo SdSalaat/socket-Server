@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import jQuery from 'jQuery';
 import {Router} from "@angular/router";
+import {AuthRouterService} from "../auth-router.service";
 
 @Component({
   selector: 'app-register',
@@ -8,9 +9,16 @@ import {Router} from "@angular/router";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+  userDetails = {
+    email: '',
+    name: '',
+    username: '',
+    phone: '',
+    password: '',
+  };
   constructor(
-    private router: Router
+    private router: Router,
+    private authRoute: AuthRouterService
   ) {
   }
 
@@ -19,19 +27,20 @@ export class RegisterComponent implements OnInit {
       "use strict";
       /*==================================================================
       [ Validate ]*/
-      let input = $('.validate-input .input100');
+      let inputs = $('.validate-input .input100');
 
       $('.validate-form').on('submit', () => {
         let check = true;
 
-        for (let i = 0; i < input.length; i++) {
-          if (validate(input[i],i) == false) {
-            showValidate(input[i]);
+        for (let i = 0; i < inputs.length; i++) {
+          if (validate(inputs[i],i) == false) {
+            showValidate(inputs[i]);
             check = false;
           }
         }
 
         if (check) {
+          this.registerUser();
           check = false;
           return check
         } else {
@@ -52,7 +61,7 @@ export class RegisterComponent implements OnInit {
             return false;
           }
         } else if($(input).attr('type') == 'confirmPass' || $(input).attr('name') == 'confirmPass') {
-          return $(input).val() === $(input[index+1]).val()
+          return $(input).val() === $(inputs[index-1]).val()
         }else {
           if ($(input).val().trim() == '') {
             return false;
@@ -79,6 +88,13 @@ export class RegisterComponent implements OnInit {
   route(){
     // noinspection JSIgnoredPromiseFromCall
     this.router.navigate(['/'])
+  }
+
+  registerUser() {
+    this.authRoute.registerUser(this.userDetails)
+      .subscribe(data => {
+        this.route()
+      })
   }
 
 }

@@ -47,3 +47,51 @@
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 }
+
+.login20-form-btn:disabled {
+  background: #57b84687;
+  cursor: not-allowed;
+}
+
+.sender, .receiver{
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.sender{
+  color: #fff;
+  background-color: #9c9c9c;
+  float: right;
+}
+
+.receiver {
+  color: #fff;
+  background-color: #57b846;
+}
+
+.display-time{
+  color: #c1c1c1;
+}
+
+.message-display{
+  display: contents;
+  max-width: 300px;
+}
+
+.sender-display{
+  float: right;
+  margin: 5px 0;
+}
+
+
+.display-block{
+  display:block;
+}
+
+.display-grid{
+  display: inline-grid
+}
+
+.display-window{
+  display: flow-root;
+}
