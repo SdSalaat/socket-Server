@@ -12,20 +12,17 @@
   padding: 15px 50px 15px 50px;
 }
 
-.fixed-height{
+.fixed-height {
   //max-height: 350px;
   height: 465px;
   overflow: scroll;
 }
 
-.fixed-height-1{
-  max-height: 400px;
-  padding: 10px;
-  height: 400px;
-  overflow: scroll;
+.margin-setter-1{
+  margin-bottom: 10px;
 }
 
-.width100{
+.width100 {
   width: 100%;
 }
 
@@ -94,7 +91,7 @@
   padding: 5px !important;
 }
 
-.col-md-4{
+.col-md-4 {
   padding-left: 0 !important;
 }
 
@@ -107,4 +104,8 @@
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 50px 50px 33px 60px;
+}
+
+.display-content {
+  display: contents;
 }

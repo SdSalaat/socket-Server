@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, AfterViewChecked} from '@angular/core';
 import {ChatsRouterService} from "../chats-router.service";
 import {Socket} from "ngx-socket-io";
 
@@ -8,6 +8,7 @@ import {Socket} from "ngx-socket-io";
   styleUrls: ['./chat-center.component.scss']
 })
 export class ChatCenterComponent implements OnInit {
+  @ViewChild('displayWindow') myScrollContainer: ElementRef;
   user: any = {};
   message: string = "";
   chats: any[] = [];
@@ -18,13 +19,18 @@ export class ChatCenterComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.scrollToBottom();
     this.socket.on('rec-message', (data) => {
       this.activeUser = JSON.parse(localStorage.getItem('activeUser'));
       if(data.chats.length > 0) {
         this.chats = [];
         this.chats = data.chats;
+        this.scrollToBottom()
       }
     });
+  }
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   @Input('selectedUser')
@@ -54,6 +60,13 @@ export class ChatCenterComponent implements OnInit {
       message: this.message
     };
     this.socket.emit('sending-message', payload);
+  }
+
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 
 }

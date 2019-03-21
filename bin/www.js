@@ -54,20 +54,15 @@ io.on('connection', (socket) => {
     });
 
 // Socket Disconnect
-    socket.on('disconnect', () => {
-        let index = app.activePool.map(o => {
-            return o.socketID
-        }).indexOf(socket.id);
-        if (index !== -1) {
-            app.services.disconnectUser(app.activePool[index])
+    socket.on('logout-user', (user) => {
+            app.services.disconnectUser(user)
                 .then(() => {
-                    app.activePool.splice(index, 1);
                     app.services.getAllUsers()
                         .then(data => {
                             socket.broadcast.emit('all-users', data);
+                            socket.emit('logged-out', true)
                         });
                 })
-        }
     })
 
 })

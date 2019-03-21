@@ -4,19 +4,20 @@
 <div *ngIf="(user | json) != ({} | json)">
   <div align="center"><b>{{user.name}}</b></div>
   <br>
-  <div class="fixed-height-1">
+  <div #displayWindow class="fixed-height-1">
     <div class="display-window" *ngFor="let chat of chats">
-      <div class="message-display" *ngIf="chat.senderID !== activeUser._id">
-        <div class="display-grid">
-          <span class="receiver"><small>{{chat.message}}</small></span>
-          <div class="display-time">
-            <small style="float: right;" class="">sent: 20:08</small>
+
+      <div class="message-display receiver-display" *ngIf="chat.senderID !== activeUser._id">
+        <div class="display-block">
+          <div class="receiver-display">
+            <span class="receiver"><small>{{chat.message}} </small></span>
+            <div class="display-time receiver-display-time">
+              <small class="receiver-display">sent: 20:08</small>
+            </div>
+            <br>
           </div>
-          <br>
         </div>
       </div>
-
-
       <div class="message-display sender-display" *ngIf="chat.senderID === activeUser._id">
         <div class="display-block">
           <div class="sender-display">

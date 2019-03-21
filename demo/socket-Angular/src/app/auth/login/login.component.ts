@@ -96,12 +96,18 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/chats/users'])
       }
     })
+    const activeUSer = JSON.parse(localStorage.getItem('activeUser'));
+    const active = JSON.parse(localStorage.getItem('active'));
+    if(Object.keys(activeUSer).length > 0 && active.active === true) {
+      this.socket.emit('validate-user');
+    }
   }
 
   userLogin(){
     this.authRoute.userLogin(this.userDetails)
       .subscribe(data => {
         localStorage.setItem('activeUser', JSON.stringify(data.data));
+        localStorage.setItem('active', JSON.stringify({active: true}));
         this.socket.emit('validate-user');
       })
   }
