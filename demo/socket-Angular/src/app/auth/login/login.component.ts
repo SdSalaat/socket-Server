@@ -98,8 +98,10 @@ export class LoginComponent implements OnInit {
     })
     const activeUSer = JSON.parse(localStorage.getItem('activeUser'));
     const active = JSON.parse(localStorage.getItem('active'));
-    if(Object.keys(activeUSer).length > 0 && active.active === true) {
-      this.socket.emit('validate-user');
+    if(activeUSer !== null) {
+      if(Object.keys(activeUSer).length > 0 && active.active === true) {
+        this.socket.emit('validate-user');
+      }
     }
   }
 
