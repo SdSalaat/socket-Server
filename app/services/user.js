@@ -33,16 +33,17 @@ module.exports = (app) => {
                                 isActive: data.isActive
                             });
                         }
-                        resolve({
-                            data,
-                            message: 'User Logged In successfully!'
-                        });
+                    resolve({
+                        data,
+                        message: 'User Logged In successfully!'
+                    });
                     }
                 )
 
-                .catch(error => reject({
+                .catch(err => reject({
                     message: 'Error while Logging in user...',
-                    error: error.errors
+                    code: err.code || 403,
+                    error: err.message
                 }));
         })
             ;
@@ -61,7 +62,8 @@ module.exports = (app) => {
 
                 .catch(error => reject({
                     message: 'Error while Creating user...',
-                    error: error.errors
+                    error: error.message,
+                    code: error.code
                 }));
         })
             ;

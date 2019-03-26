@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (app, db) => {
-    require('./user')(app, db);
-    require('./chats')(app, db);
+module.exports = (app) => {
+    require('./user')(app);
+    require('./chats')(app);
 };
