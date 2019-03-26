@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
                 .then(() => {
                     app.services.getAllUsers()
                         .then(data => {
-                            socket.broadcast.emit('all-users', data);
+                            socket.broadcast.emit('all-users', data.data);
                             socket.emit('logged-out', true)
                         });
                 })
