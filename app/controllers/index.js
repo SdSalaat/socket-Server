@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = (app) => {
-    require('./user')(app);
-    require('./socket')(app);
-    require('./chats')(app);
+module.exports = (app, wp, fs) => {
+    require('./user')(app, wp, fs);
+    require('./socket')(app, wp, fs);
+    require('./chats')(app, wp, fs);
 };

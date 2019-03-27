@@ -9,6 +9,8 @@
 
 const debug = require('debug')('expressapp');
 const app = require('../app');
+const fs = require('fs');
+const wp = require('web-push');
 
 app.set('port', process.env.PORT || 3000);
 
@@ -45,6 +47,32 @@ io.on('connection', (socket) => {
     socket.on('sending-message', (payload) => {
         app.services.insertChatMessage(payload)
             .then(chat => {
+                fs.readFile('subscriptions.json', (err, jsonData) => {
+                    if(err){
+                        console.log(err)
+                    } else {
+                        let data = JSON.parse(jsonData);
+                        data.subscriptions = data.subscriptions.filter(function(returnableObjects){
+                            if(returnableObjects.email === payload.receiverEmail){
+                                wp.sendNotification(returnableObjects.sub, JSON.stringify({
+                                    "notification": {
+                                        "title": "New Message",
+                                        "body": `${payload.senderID} has sent you a message`,
+                                        "vibrate": [100, 50, 100],
+                                        "data": {
+                                            "dateOfArrival": Date.now(),
+                                            "primaryKey": 1
+                                        },
+                                        "actions": [{
+                                            "action": "explore",
+                                            "title": "Go to the site"
+                                        }]
+                                    }
+                                }));
+                            }
+                        });
+                    }
+                });
                 app.services.getAllChats(chat.chats._doc)
                     .then(chats => {
                         io.emit('rec-message', chats);
@@ -55,6 +83,17 @@ io.on('connection', (socket) => {
 
 // Socket Disconnect
     socket.on('logout-user', (user) => {
+        fs.readFile('subscriptions.json', (err, jsonData) => {
+            if(err){
+                console.log(err)
+            } else {
+                let data = JSON.parse(jsonData);
+                data.subscriptions = data.subscriptions.filter(function(returnableObjects){
+                    return returnableObjects.email !== user.email;
+                });
+                fs.writeFile('subscriptions.json', JSON.stringify(data), () => {})
+            }
+        });
             app.services.disconnectUser(user)
                 .then(() => {
                     app.services.getAllUsers()

@@ -2,9 +2,16 @@
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const express = require('express');
+const webPush = require('web-push');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 const app = express();
 const router = express.Router();
+
+const publicKey = "BKZ7q9GnaavKPUheKO8TkBHgRglEA1sYZtjs05Y45scAoTRVMelVj5qTddqTfF48V_JcxYL1scOT_WA9GyWhAes";
+const privateKey = "YHyoFdO-PEDVlVAXVQ4WryBPlRJE9_5V8tWKT1lYurg";
+
+webPush.setVapidDetails('mailto:abdulsamad.as.811@gmail.com', publicKey, privateKey);
 
 // body-parser config
 app.use(bodyParser.json({
@@ -34,7 +41,7 @@ app.use('/api', router);
 require('./config')(mongoose, app);
 require('./app/models')(app, mongoose);
 require('./app/services')(app);
-require('./app/controllers')(app);
+require('./app/controllers')(app, webPush, fs);
 require('./app/routes')(app, router);
 
 /*The Whole Application Files*/
