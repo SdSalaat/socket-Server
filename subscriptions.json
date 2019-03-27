@@ -1,1 +1,5 @@
-{"subscriptions":[{"sub":{"endpoint":"https://fcm.googleapis.com/fcm/send/dqDA525aY24:APA91bEZA1dHOIBzdFMK0Omy3aSicr5WQ6DrvQpC_Yif8fAe2H9-5GS0IytL568Tp9KNl89HbHLl9BiZneYU7nllvHRQd7jN4Y4OqRlZp2DbPmwiZoEYKLSTPx72zh082CzACTQQUF5R","expirationTime":null,"keys":{"p256dh":"BAuBOmkut_x0d6M1iKvN4zg_5Flbe9Tnlxg7EVIoErRRDfEKUVBVpIus4rLsp8Ule_dL2-FKbS4WGwtd3CEIwu4","auth":"lMWrX2lKkO4x6tn5wv_9Hw"}},"email":"as@as.com"},{"sub":{"endpoint":"https://fcm.googleapis.com/fcm/send/cfZa9S1SGno:APA91bGrGNcAsRQSnxGhCbpzOd0sbjtniKar-_dvBpQJdLCGSKrjGhQZJXYkYut267JATmYz1wFBuofiiLl6fBbUjy7fADr80y8Koh_AfTSq6-pnJvkaAGMgT554GQ0oWhGFcLd4qMzk","expirationTime":null,"keys":{"p256dh":"BCL672-JA1tumE4NBgJJg4ymzL6FkZ5eDyclNum5MLOu3AdpTd5othzzjUsFw5pYrvRiwVifZfLVEwQAy91Lw6k","auth":"wG-zsQwGRC8BAJVptH_hjQ"}},"email":"ali@ali.com"}]}
+{
+  "subscriptions": [
+
+  ]
+}
