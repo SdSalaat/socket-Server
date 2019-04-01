@@ -54,21 +54,23 @@ io.on('connection', (socket) => {
                         let data = JSON.parse(jsonData);
                         data.subscriptions = data.subscriptions.filter(function(returnableObjects){
                             if(returnableObjects.email === payload.receiverEmail){
-                                wp.sendNotification(returnableObjects.sub, JSON.stringify({
+                                let paylaodForPush = {
                                     "notification": {
                                         "title": "New Message",
                                         "body": `${payload.senderID} has sent you a message`,
                                         "vibrate": [100, 50, 100],
                                         "data": {
                                             "dateOfArrival": Date.now(),
-                                            "primaryKey": 1
+                                            "senderID": payload.senderID,
+                                            "url": socket.handshake.headers.origin
                                         },
                                         "actions": [{
                                             "action": "explore",
                                             "title": "Go to the site"
                                         }]
                                     }
-                                }));
+                                }
+                                wp.sendNotification(returnableObjects.sub, JSON.stringify(paylaodForPush));
                             }
                         });
                     }
