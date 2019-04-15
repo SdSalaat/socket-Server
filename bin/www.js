@@ -57,7 +57,7 @@ io.on('connection', (socket) => {
                                 let paylaodForPush = {
                                     "notification": {
                                         "title": "New Message",
-                                        "body": `${payload.senderID} has sent you a message`,
+                                        "body": `${payload.senderName} has sent you a message`,
                                         "vibrate": [100, 50, 100],
                                         "data": {
                                             "dateOfArrival": Date.now(),
