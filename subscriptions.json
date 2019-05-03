@@ -2,17 +2,6 @@
   "subscriptions": [
     {
       "sub": {
-        "endpoint": "https://fcm.googleapis.com/fcm/send/fsbFpMy2XlE:APA91bF9eK2230YbGW0dIt-ma7O57W7jVZ5I05daUjtgInhuuV-RSasEGi2b7YR_gjD2QS4ULLMi-d-RSZDAklIc0k4WkW7kwuWhQq5-td_FHTsPbTUMQEOUlQ3Pxl089pVI0V-4K_VF",
-        "expirationTime": null,
-        "keys": {
-          "p256dh": "BH14Stgmllr7EV-UbXlTUIOmnlyiftMyMba3js1YJeW2X_VrZVPDWezy01dvrRjinO6UEHfTJt3eL_S-FSLHrBw",
-          "auth": "6BZy30SJLK4E7vMAYiz__Q"
-        }
-      },
-      "email": "john@doe.com"
-    },
-    {
-      "sub": {
         "endpoint": "https://fcm.googleapis.com/fcm/send/cSVn1ADwu28:APA91bFHqF5u0V0votfM2ejxe_Tj9QxysLhymd9VjRsPI2McefmlM--Fzy8aF7ikDEuB8nQm3nElYXMCQKwArjNnwaEwH8jygTi7yWd77KgicxxTEGG2VTaKl_Qg6NqfPyp4ucq43GLx",
         "expirationTime": null,
         "keys": {
